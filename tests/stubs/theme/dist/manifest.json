@@ -1,0 +1,30 @@
+{
+    "resources/js/common.css": {
+        "file": "css/common.e82aa1ab.css",
+        "src": "resources/js/common.css"
+    },
+    "resources/css/app.css": {
+        "file": "css/app.98fde70f.css",
+        "src": "resources/css/app.css",
+        "isEntry": true
+    },
+    "resources/js/app.js": {
+        "file": "js/app.c08c6dc9.js",
+        "src": "resources/js/app.js",
+        "isEntry": true
+    },
+    "resources/js/common.js": {
+        "file": "js/common.9b86745c.js",
+        "src": "resources/js/common.js",
+        "isEntry": true,
+        "imports": [
+            "_vendor.641c6ca9.js"
+        ],
+        "css": [
+            "css/common.e82aa1ab.css"
+        ]
+    },
+    "_vendor.641c6ca9.js": {
+        "file": "js/chunks/vendor.641c6ca9.js"
+    }
+}

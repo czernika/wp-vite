@@ -1,0 +1,10 @@
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor
+
+# Cache
+*.cache
