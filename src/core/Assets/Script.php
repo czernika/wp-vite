@@ -11,8 +11,27 @@ class Script implements AssetInterface, CanBeEntryInterface
 {
     use Compilable, CanBeEntry;
 
-    public function __construct(protected Vite $vite, protected RawAsset $asset)
+    /**
+     * Vite assets
+     *
+     * @var Vite
+     */
+    protected Vite $vite;
+
+    public function __construct(protected RawAsset $asset)
     {
+    }
+
+    /**
+     * Set Script dependencies with Vite
+     *
+     * @param Vite $vite
+     * @return static
+     */
+    public function withDependencies(Vite $vite): static
+    {
+        $this->vite = $vite;
+        return $this;
     }
 
     /**
@@ -33,7 +52,7 @@ class Script implements AssetInterface, CanBeEntryInterface
      */
     public function hasCssDeps(): bool
     {
-        return isset($this->asset->css);
+        return !empty($this->asset->getCssDeps());
     }
 
     /**
@@ -41,9 +60,9 @@ class Script implements AssetInterface, CanBeEntryInterface
      *
      * @return boolean
      */
-    public function hasVednorDeps(): bool
+    public function hasVendorDeps(): bool
     {
-        return isset($this->asset->imports);
+        return !empty($this->asset->getVendorDeps());
     }
 
     /**
@@ -57,7 +76,7 @@ class Script implements AssetInterface, CanBeEntryInterface
             return [];
         }
 
-        return $this->asset->css;
+        return $this->asset->getCssDeps();
     }
 
     /**
@@ -72,7 +91,7 @@ class Script implements AssetInterface, CanBeEntryInterface
         }
 
         return array_map(function (string $key) {
-            $assets = array_filter($this->vite->getStyles(), fn (Style $css) => $key === $css->getFile());
+            $assets = array_filter($this->vite->getStyles(), fn (Style $css) => $key === $css->getFilePath());
 
             // We know there can be only one entry
             $entrypoint = array_keys($assets)[0];
@@ -88,11 +107,11 @@ class Script implements AssetInterface, CanBeEntryInterface
      */
     public function getRawVendorDeps(): array
     {
-        if (!$this->hasVednorDeps()) {
+        if (!$this->hasVendorDeps() || !isset($this->vite)) {
             return [];
         }
 
-        return $this->asset->imports;
+        return $this->asset->getVendorDeps();
     }
 
     /**
@@ -102,7 +121,7 @@ class Script implements AssetInterface, CanBeEntryInterface
      */
     public function getVendorDeps(): array
     {
-        if (!$this->hasVednorDeps()) {
+        if (!$this->hasVendorDeps() || !isset($this->vite)) {
             return [];
         }
 

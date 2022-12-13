@@ -1,6 +1,18 @@
 {
   "name": "czernika/wp-vite",
   "type": "package",
+  "license": "MIT",
+  "description": "Vite integration for WordPress projects",
+  "authors": [
+    {
+      "name": "Aliakseyenka Ihar",
+      "email": "aliha.devs@gmail.com",
+      "homepage": "https://github.com/czernika"
+    }
+  ],
+  "keywords": [
+    "wordpress", "vite", "wolat"
+  ],
   "require": {
     "php": "^8.0",
     "netresearch/jsonmapper": "^4.1"

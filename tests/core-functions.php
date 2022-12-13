@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * --------------------------------------------------------------------------
+ * WordPress core functions mocks
+ * --------------------------------------------------------------------------
+ */
+
 if (!function_exists('wp_normalize_path')) {
     function wp_normalize_path(string $path): string
     {

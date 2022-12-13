@@ -4,17 +4,26 @@ use Wolat\Assets\RawAsset;
 use Wolat\Assets\Style;
 
 beforeEach(function () {
-    $data = new RawAsset();
+    $asset = new RawAsset();
 
-    $data->src = 'resources/css/common.css';
-    $data->isEntry = 1;
+    $asset->setSrc('resources/css/common.css');
+    $asset->setAsEntry(true);
 
-    $this->style = new Style($data);
+    $this->style = new Style($asset);
 });
 
-it('asserts style recieves correct data about entrypoint', function () {
+it('asserts entrypoint resolves correct source', function () {
     expect($this->style->getSrc())->toBe('resources/css/common.css');
+});
+
+it('asserts entrypoint resolves correct full source path', function () {
     expect($this->style->getAbsoluteSrcPath())->toBe('path/to/theme/resources/css/common.css');
+});
+
+it('asserts entrypoint resolves correct full source entry name', function () {
     expect($this->style->getEntryName())->toBe('common-css');
+});
+
+it('asserts entrypoint determines if it is entrypoint or not', function () {
     expect($this->style->isEntry())->toBeTrue();
 });

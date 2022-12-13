@@ -11,7 +11,7 @@ trait CanBeEntry
      */
     public function getSrc(): string
     {
-        return $this->asset->src;
+        return $this->asset->getSrc();
     }
 
     /**
@@ -39,6 +39,6 @@ trait CanBeEntry
      */
     public function isEntry(): bool
     {
-        return isset($this->asset->isEntry) && $this->asset->isEntry;
+        return $this->asset->isEntry();
     }
 }

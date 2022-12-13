@@ -4,15 +4,19 @@ use Wolat\Assets\RawAsset;
 use Wolat\Assets\Style;
 
 beforeEach(function () {
-    $data = new RawAsset();
 
-    $data->viteUrl = 'http://localhost:5173';
-    $data->distDir = '/dist/';
-    $data->file = 'css/output.css';
+    $asset = new RawAsset();
 
-    $this->style = new Style($data);
+    $asset->setViteData('http://localhost:5173', '/dist/');
+    $asset->setFilePath('css/output.css');
+
+    $this->style = new Style($asset);
 });
 
-it('asserts style compiles correct HTML tag', function () {
+it('asserts style draws correct HTML tag', function () {
     expect($this->style->getHtmlTag())->toBe('<link href="http://example.com/app/themes/wolat/dist/css/output.css" rel="stylesheet" />');
+});
+
+it('asserts style draws correct HTML tag in development', function () {
+    expect($this->style->getHtmlTag(true))->toBe('<link href="http://localhost:5173/dist/css/output.css" rel="stylesheet" />');
 });

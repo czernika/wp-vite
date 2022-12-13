@@ -13,7 +13,7 @@ trait Compilable
      */
     public function getViteFullDevUrl(): string
     {
-        return $this->asset->viteUrl;
+        return $this->asset->getViteUrl();
     }
 
     /**
@@ -23,7 +23,7 @@ trait Compilable
      */
     public function getDistDir(): string
     {
-        return $this->asset->distDir;
+        return $this->asset->getDistDirName();
     }
 
     /**
@@ -31,9 +31,9 @@ trait Compilable
      *
      * @return string
      */
-    public function getFile(): string
+    public function getFilePath(): string
     {
-        return $this->asset->file;
+        return $this->asset->getFilePath();
     }
 
     /**
@@ -41,9 +41,9 @@ trait Compilable
      *
      * @return string
      */
-    public function getDist(): string
+    public function getDistFilePath(): string
     {
-        return $this->getDistDir() . $this->getFile();
+        return $this->getDistDir() . $this->getFilePath();
     }
 
     /**
@@ -51,9 +51,9 @@ trait Compilable
      *
      * @return string
      */
-    public function getAbsoluteDistPath(): string
+    public function getAbsoluteDistFilePath(): string
     {
-        return wp_normalize_path(get_template_directory() . $this->getDist());
+        return wp_normalize_path(get_template_directory() . $this->getDistFilePath());
     }
 
     /**
@@ -72,9 +72,9 @@ trait Compilable
     public function getDistUrl(bool $isDev = false): string
     {
         if ($isDev) {
-            return $this->getViteFullDevUrl() . $this->getDist();
+            return $this->getViteFullDevUrl() . $this->getDistFilePath();
         }
 
-        return $this->getNonDevUrl() . $this->getDist();
+        return $this->getNonDevUrl() . $this->getDistFilePath();
     }
 }

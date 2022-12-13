@@ -173,6 +173,7 @@ class Vite
      */
     public function getDistDir(): string
     {
+        // TODO should ends and starts with `/`
         return $this->distDir;
     }
 
@@ -332,20 +333,6 @@ class Vite
     }
 
     /**
-     * Add extra data to assets
-     *
-     * @param object $data
-     * @return RawAsset
-     */
-    protected function addDevServerDataToAsset(RawAsset $data): RawAsset
-    {
-        $data->distDir = $this->getDistDir();
-        $data->viteUrl = $this->getViteFullDevUrl();
-
-        return $data;
-    }
-
-    /**
      * Get list of entries
      *
      * @return Array<string,CanBeEntryInterface>
@@ -356,6 +343,19 @@ class Vite
             $this->getAssets(),
             fn (AssetInterface $asset) => $asset instanceof CanBeEntryInterface && $asset->isEntry()
         );
+    }
+
+    /**
+     * Add extra data to assets
+     *
+     * @param object $data
+     * @return RawAsset
+     */
+    protected function addDevServerDataToAsset(RawAsset $data): RawAsset
+    {
+        $data->setViteData($this->getViteFullDevUrl(), $this->getDistDir());
+
+        return $data;
     }
 
     /**
@@ -405,8 +405,8 @@ class Vite
             return new Vendor($this->addDevServerDataToAsset($entry));
         }
 
-        // By defaut we're assuming it's a Script
-        return new Script($this, $this->addDevServerDataToAsset($entry));
+        // By default we're assuming it's a Script
+        return (new Script($this->addDevServerDataToAsset($entry)))->withDependencies($this);
     }
 
     /**

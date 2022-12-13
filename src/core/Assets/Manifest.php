@@ -26,12 +26,22 @@ class Manifest
     /**
      * List of manifest entries and assets
      *
-     * @var array
+     * @var Array<string, RawAsset>
      */
     protected array $assets = [];
 
+    /**
+     * JSON Mapper
+     *
+     * @var JsonMapper
+     */
+    protected JsonMapper $mapper;
+
     protected function __construct(protected string $path)
     {
+        $this->mapper = new JsonMapper();
+        $this->mapper->bIgnoreVisibility = true;
+
         $this->resolveAssets();
     }
 
@@ -57,16 +67,25 @@ class Manifest
      */
     protected function resolveAssets(): void
     {
-        $mapper = new JsonMapper();
-        $assets = (array) json_decode(file_get_contents($this->getFullPath(), true));
+        $assets = $this->getAssetsFromManifest();
 
-        $this->assets = array_map(fn (stdClass $asset) => $mapper->map($asset, new RawAsset()), $assets);
+        $this->assets = array_map(fn (stdClass $asset) => $this->mapper->map($asset, new RawAsset()), $assets);
+    }
+
+    /** 
+     * Get assets from manifest file path
+     *
+     * @return array
+     */
+    protected function getAssetsFromManifest(): array
+    {
+        return (array) json_decode(file_get_contents($this->getFullPath(), true));
     }
 
     /**
      * Get manifest assets
      *
-     * @return array
+     * @return Array<string, RawAsset>
      */
     public function getAssets(): array
     {
