@@ -1,4 +1,6 @@
 {
+  "name": "czernika/wp-vite",
+  "type": "package",
   "require": {
     "php": "^8.0",
     "netresearch/jsonmapper": "^4.1"
