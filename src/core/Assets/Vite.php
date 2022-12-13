@@ -220,7 +220,7 @@ class Vite
      * Draw HTML tag
      *
      * @param string|string[] ...$entrypoints
-     * 
+     *
      * @throws EntryPointNotExistsException Invalid entrypoint key
      * @return string
      */

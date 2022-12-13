@@ -20,6 +20,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
  * Include WordPress core mocked functions
  * --------------------------------------------------------------------------
  *
- * Test helpers 
+ * Test helpers
  */
 require_once __DIR__ . '/core-functions.php';

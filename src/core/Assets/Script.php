@@ -94,7 +94,7 @@ class Script implements AssetInterface, CanBeEntryInterface
             $assets = array_filter($this->vite->getStyles(), fn (Style $css) => $key === $css->getFilePath());
 
             // We know there can be only one entry
-            $entrypoint = array_keys($assets)[0];
+            $entrypoint = array_key_first($assets);
 
             return $assets[$entrypoint];
         }, $this->getRawCssDeps());

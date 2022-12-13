@@ -88,7 +88,7 @@ class Manifest
         $this->assets = array_map(fn (stdClass $asset) => $this->mapper->map($asset, new RawAsset()), $assets);
     }
 
-    /** 
+    /**
      * Get raw content array from manifest file
      *
      * @throws ManifestFileNotFoundException Manifest file does not exists
