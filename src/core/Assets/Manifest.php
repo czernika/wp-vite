@@ -6,6 +6,7 @@ namespace Wolat\Assets;
 
 use JsonMapper;
 use stdClass;
+use Wolat\Assets\Exceptions\ManifestFileNotFoundException;
 
 class Manifest
 {
@@ -75,11 +76,16 @@ class Manifest
     /** 
      * Get assets from manifest file path
      *
+     * @throws ManifestFileNotFoundException Manifest file does not exists
      * @return array
      */
     protected function getAssetsFromManifest(): array
     {
-        return (array) json_decode(file_get_contents($this->getFullPath(), true));
+        if (!file_exists($manifest = $this->getFullPath())) {
+            throw new ManifestFileNotFoundException("Manifest file not found at \"{$manifest}\". Check file name and its path");
+        }
+
+        return (array) json_decode(file_get_contents($manifest, true));
     }
 
     /**

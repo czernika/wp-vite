@@ -173,7 +173,6 @@ class Vite
      */
     public function getDistDir(): string
     {
-        // TODO should ends and starts with `/`
         return $this->distDir;
     }
 
@@ -185,6 +184,7 @@ class Vite
      */
     public function setDistDir(string $dir): void
     {
+        // TODO should ends and starts with `/`
         $this->distDir = $dir;
     }
 
@@ -210,9 +210,11 @@ class Vite
     }
 
     /**
-     * Undocumented function
+     * Draw HTML tag
      *
      * @param string|string[] ...$entrypoints
+     * 
+     * @throws EntryPointNotExistsException Invalid entrypoint key
      * @return string
      */
     public function inject(...$entrypoints): string
