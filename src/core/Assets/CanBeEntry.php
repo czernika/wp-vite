@@ -15,7 +15,7 @@ trait CanBeEntry
     }
 
     /**
-     * Get full path to source file
+     * Get full absolute path to source file
      *
      * @return string
      */
@@ -29,7 +29,8 @@ trait CanBeEntry
      */
     public function getEntryName(): string
     {
-        // last part after `/` sign
+        // Get last part after `/` sign
+        // This can help during WordPress script registration
         $lastPart = substr($this->getSrc(), strrpos($this->getSrc(), '/') + 1);
         return str_replace('.', '-', $lastPart);
     }

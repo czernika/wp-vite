@@ -7,11 +7,11 @@ namespace Wolat\Assets;
 class RawAsset
 {
     /**
-     * Source name
+     * Source file name
      *
      * @var string|null
      */
-    protected ?string $src = null;
+    protected ?string $src;
 
     /**
      * Output file name
@@ -42,18 +42,18 @@ class RawAsset
     public ?array $css = [];
 
     /**
-     * Vite development URL
+     * Full Vite development URL
      *
      * @var string
      */
-    protected string $url = '';
+    protected string $url;
 
     /**
-     * Dist directory name
+     * Dist directory name (with slashes)
      *
      * @var string
      */
-    protected string $dist = '';
+    protected string $dist;
 
     /**
      * Set extra data about environment
@@ -79,7 +79,7 @@ class RawAsset
     }
 
     /**
-     * get dist directory name
+     * Get dist directory name
      *
      * @return string
      */

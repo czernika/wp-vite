@@ -63,7 +63,9 @@ Typical manifest file should looks like
 3. Inject input entrypoint defined in `vite.config.js`
 
 ```php
-$manifest = \Wolat\Assets\Manifest::load('absolute/path/to/manifest.json');
+// No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
+$manifest = \Wolat\Assets\Manifest::load('absolute/path/where/manifest/file/is');
+
 $vite = new \Wolat\Assets\Vite($manifest);
 
 $html = $vite->inject('resources/js/common.js');

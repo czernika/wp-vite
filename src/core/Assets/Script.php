@@ -12,7 +12,7 @@ class Script implements AssetInterface, CanBeEntryInterface
     use Compilable, CanBeEntry;
 
     /**
-     * Vite assets
+     * Vite assets object
      *
      * @var Vite
      */
@@ -82,7 +82,7 @@ class Script implements AssetInterface, CanBeEntryInterface
     /**
      * Get list of CSS dependencies
      *
-     * @return Array<string, Style>
+     * @return Array<string,Style>
      */
     public function getCssDeps(): array
     {
@@ -117,7 +117,7 @@ class Script implements AssetInterface, CanBeEntryInterface
     /**
      * Get list of vendor dependencies
      *
-     * @return Array<string, Vendor>
+     * @return Array<string,Vendor>
      */
     public function getVendorDeps(): array
     {

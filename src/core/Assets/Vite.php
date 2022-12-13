@@ -42,7 +42,7 @@ class Vite
      * List of assets
      * All available assets from manifest
      *
-     * @var array
+     * @var Array<string,AssetInterface>
      */
     protected array $assets = [];
 
@@ -50,7 +50,7 @@ class Vite
      * List of entries
      * Entry must have `isEntry = 1`
      *
-     * @var array
+     * @var Array<string,CanBeEntryInterface>
      */
     protected array $entries = [];
 
@@ -58,7 +58,7 @@ class Vite
      * List of scripts
      * Only Javascript files - vendors and entrypoints
      *
-     * @var array
+     * @var Array<string,Script|Vendor>
      */
     protected array $scripts = [];
 
@@ -66,7 +66,7 @@ class Vite
      * List of modules
      * Only Javascript entrypoints
      *
-     * @var array
+     * @var Array<string,Script>
      */
     protected array $modules = [];
 
@@ -74,14 +74,14 @@ class Vite
      * List of vendors
      * Only Javascript imported modules
      *
-     * @var array
+     * @var Array<string,Vendor>
      */
     protected array $vendors = [];
 
     /**
      * List of all styles
      *
-     * @var array
+     * @var Array<string,Style>
      */
     protected array $styles = [];
 
@@ -95,9 +95,9 @@ class Vite
      *
      * @param Manifest $manifest
      * @param string|string[] ...$entrypoints
-     * @return void
+     * @return string
      */
-    public static function draw(Manifest $manifest, ...$entrypoints)
+    public static function drawTags(Manifest $manifest, ...$entrypoints): string
     {
         return (new static($manifest))->inject(...$entrypoints);
     }
@@ -107,11 +107,11 @@ class Vite
      *
      * @param string $manifest
      * @param string|string[] ...$entrypoints
-     * @return void
+     * @return string
      */
-    public static function drawFromPath(string $manifest, ...$entrypoints)
+    public static function drawTagsFromPath(string $manifest, ...$entrypoints): string
     {
-        return static::draw(Manifest::load($manifest), ...$entrypoints);
+        return static::drawTags(Manifest::load($manifest), ...$entrypoints);
     }
 
     /**
@@ -184,7 +184,14 @@ class Vite
      */
     public function setDistDir(string $dir): void
     {
-        // TODO should ends and starts with `/`
+        if (!str_starts_with($dir, DIRECTORY_SEPARATOR)) {
+            $dir = DIRECTORY_SEPARATOR . $dir;
+        }
+
+        if (!str_ends_with($dir, DIRECTORY_SEPARATOR)) {
+            $dir .= DIRECTORY_SEPARATOR;
+        }
+
         $this->distDir = $dir;
     }
 
@@ -423,7 +430,7 @@ class Vite
     }
 
     /**
-     * Determnine does asset scipt or not
+     * Determine does this asset script or not
      *
      * @param string $asset
      * @return boolean

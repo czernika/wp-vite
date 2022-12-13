@@ -11,13 +11,6 @@ use Wolat\Assets\Exceptions\ManifestFileNotFoundException;
 class Manifest
 {
     /**
-     * Manifest filename
-     *
-     * @var string
-     */
-    protected string $name = 'manifest.json';
-
-    /**
      * Manifest instance
      *
      * @var null|static
@@ -25,44 +18,66 @@ class Manifest
     protected static ?Manifest $instance = null;
 
     /**
-     * List of manifest entries and assets
+     * List of manifest raw assets
      *
      * @var Array<string, RawAsset>
      */
     protected array $assets = [];
 
     /**
-     * JSON Mapper
+     * JSON Mapper object
      *
      * @var JsonMapper
      */
     protected JsonMapper $mapper;
 
-    protected function __construct(protected string $path)
+    protected function __construct(protected string $path, protected string $name = 'manifest.json')
     {
-        $this->mapper = new JsonMapper();
-        $this->mapper->bIgnoreVisibility = true;
-
+        $this->initMapper();
         $this->resolveAssets();
     }
 
     /**
-     * Instantiate manifest object
+     * Initialize JSON Mapper object
+     *
+     * @return void
+     */
+    protected function initMapper(): void
+    {
+        $this->mapper = new JsonMapper();
+        $this->mapper->bIgnoreVisibility = true;
+    }
+
+    /**
+     * Instantiate new manifest object
      *
      * @param string $path
+     * @param string $name
      * @return static
      */
-    public static function load(string $path): static
+    public static function load(string $path, string $name = 'manifest.json'): static
+    {
+        return new static($path, $name);
+    }
+
+    /**
+     * Load previously created manifest object or new one
+     *
+     * @param string $path
+     * @param string $name
+     * @return static
+     */
+    public static function loadSingleton(string $path, string $name = 'manifest.json'): static
     {
         if (is_null(static::$instance)) {
-            static::$instance = new static($path);
+            static::$instance = static::load($path, $name);
         }
 
         return static::$instance;
     }
 
     /**
-     * Resolve manifest file assets
+     * Resolve assets from manifest file
      *
      * @return void
      */
@@ -74,7 +89,7 @@ class Manifest
     }
 
     /** 
-     * Get assets from manifest file path
+     * Get raw content array from manifest file
      *
      * @throws ManifestFileNotFoundException Manifest file does not exists
      * @return array
@@ -89,7 +104,7 @@ class Manifest
     }
 
     /**
-     * Get manifest assets
+     * Get all manifest assets
      *
      * @return Array<string, RawAsset>
      */
@@ -106,11 +121,11 @@ class Manifest
     protected function getNormalizedPath(): string
     {
         $path = wp_normalize_path($this->path);
-        return str_ends_with($path, '/') ? $path : $path . '/';
+        return str_ends_with($path, DIRECTORY_SEPARATOR) ? $path : $path . DIRECTORY_SEPARATOR;
     }
 
     /**
-     * Get full manifest file path
+     * Get full manifest file path (name included)
      *
      * @return string
      */
@@ -127,16 +142,5 @@ class Manifest
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Set manifest file name
-     *
-     * @param string $name
-     * @return void
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 }

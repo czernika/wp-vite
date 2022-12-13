@@ -17,7 +17,7 @@ trait Compilable
     }
 
     /**
-     * Get dist directory
+     * Get dist directory name
      *
      * @return string
      */
@@ -27,7 +27,7 @@ trait Compilable
     }
 
     /**
-     * Get compiled file relative path
+     * Get compiled file relative path to dist directory
      *
      * @return string
      */
@@ -37,7 +37,7 @@ trait Compilable
     }
 
     /**
-     * Get relative path to `dist` folder
+     * Get relative path to theme included dist directory
      *
      * @return string
      */
@@ -47,7 +47,7 @@ trait Compilable
     }
 
     /**
-     * Get absolute path to dist file
+     * Get absolute path to output file
      *
      * @return string
      */
