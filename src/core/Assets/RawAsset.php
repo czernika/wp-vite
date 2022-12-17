@@ -11,7 +11,7 @@ class RawAsset
      *
      * @var string|null
      */
-    protected ?string $src;
+    protected ?string $src = null;
 
     /**
      * Output file name

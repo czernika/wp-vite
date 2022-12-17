@@ -12,8 +12,8 @@ beforeEach(function () {
 
 it('asserts vite has initial data about development url', function () {
     expect($this->loader->getViteDevPort())->toBe(5173);
-    expect($this->loader->getViteDevUrl())->toBe('http://localhost');
-    expect($this->loader->getViteFullDevUrl())->toBe('http://localhost:5173');
+    expect($this->loader->getViteDevUrl())->toBe('http://127.0.0.1');
+    expect($this->loader->getViteFullDevUrl())->toBe('http://127.0.0.1:5173');
 });
 
 it('asserts vite has initial data about dist directory', function () {

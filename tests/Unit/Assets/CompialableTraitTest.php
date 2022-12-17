@@ -6,14 +6,15 @@ use Wolat\Assets\Style;
 beforeEach(function () {
     $asset = new RawAsset();
 
-    $asset->setViteData('http://localhost:5173', '/dist/');
+    $asset->setViteData('http://127.0.0.1:5173', '/dist/');
+    $asset->setSrc('resources/css/app.css');
     $asset->setFilePath('css/output.css');
 
     $this->style = new Style($asset);
 });
 
 it('asserts entrypoint resolves correct full development url', function () {
-    expect($this->style->getViteFullDevUrl())->toBe('http://localhost:5173');
+    expect($this->style->getViteFullDevUrl())->toBe('http://127.0.0.1:5173');
 });
 
 it('asserts entrypoint resolves correct dist directory name', function () {
@@ -31,7 +32,7 @@ it('asserts entrypoint resolves correct relative output file path from dist dire
 
 it('asserts entrypoint resolves correct dist URL data depends on environment', function () {
     // Development
-    expect($this->style->getDistUrl(true))->toBe('http://localhost:5173/dist/css/output.css');
+    expect($this->style->getDistUrl(true))->toBe('http://127.0.0.1:5173/resources/css/app.css');
 
     // Production
     expect($this->style->getDistUrl())->toBe('http://example.com/app/themes/wolat/dist/css/output.css');

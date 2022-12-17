@@ -8,7 +8,8 @@ use Wolat\Assets\Vite;
 beforeEach(function () {
     $asset = new RawAsset();
 
-    $asset->setViteData('http://localhost:5173', '/dist/');
+    $asset->setViteData('http://127.0.0.1:5173', '/dist/');
+    $asset->setSrc('resources/js/app.js');
     $asset->setFilePath('js/output.js');
 
     $this->vite = new Vite(Manifest::load(dirname(__DIR__, 2) . '/stubs/theme/dist/'));
@@ -22,6 +23,6 @@ it('asserts script compiles correct HTML tag', function () {
 });
 
 it('asserts script draws correct HTML tag in development', function () {
-    expect($this->script->getHtmlTag(true))->toBe('<script src="http://localhost:5173/dist/js/output.js" crossorigin type="module"></script>');
-    expect($this->script->getScriptHtmlTag(true))->toBe('<script src="http://localhost:5173/dist/js/output.js" crossorigin type="module"></script>');
+    expect($this->script->getHtmlTag(true))->toBe('<script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>');
+    expect($this->script->getScriptHtmlTag(true))->toBe('<script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>');
 });

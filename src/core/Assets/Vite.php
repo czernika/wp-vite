@@ -22,7 +22,7 @@ class Vite
      *
      * @var string
      */
-    protected string $devUrl = 'http://localhost';
+    protected string $devUrl = 'http://127.0.0.1';
 
     /**
      * Dist directory

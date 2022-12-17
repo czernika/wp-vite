@@ -71,8 +71,10 @@ trait Compilable
      */
     public function getDistUrl(bool $isDev = false): string
     {
-        if ($isDev) {
-            return $this->getViteFullDevUrl() . $this->getDistFilePath();
+        if ($isDev && $source = $this->asset->getSrc()) {
+            // When we're in development
+            // We should return Vite source file path
+            return $this->getViteFullDevUrl() . '/' . $source;
         }
 
         return $this->getNonDevUrl() . $this->getDistFilePath();
