@@ -29,8 +29,10 @@ it('asserts script resolves vendor dependencies', function () {
 
 it('asserts script draws correct full HTML tag including its dependencies', function () {
     expect($this->script->getHtmlTag())->toBe(<<<SCRIPT_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
     <link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
     SCRIPT_TAG);
 });

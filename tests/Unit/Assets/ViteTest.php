@@ -50,14 +50,31 @@ it('assert script entrypoint object resolved correctly from manifest assets', fu
     expect($script->getScriptHtmlTag())->toBe($html);
     expect($script->getHtmlTag())->toBe($fullHtml);
 })->with([
-    ['resources/js/common.js', true, 'resources/js/common.js', 'common-js', 'js/common.9b86745c.js', 'http://example.com/app/themes/wolat/dist/js/common.9b86745c.js', '<script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>', <<<SCRIPT_TAG
+    [
+        'resources/js/common.js', true, 'resources/js/common.js', 'common-js', 'js/common.9b86745c.js', 'http://example.com/app/themes/wolat/dist/js/common.9b86745c.js',
+        <<<SCRIPT_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
+    <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
+    SCRIPT_TAG,
+        <<<HTML_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
     <link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
-    SCRIPT_TAG],
-    ['resources/js/app.js', true, 'resources/js/app.js', 'app-js', 'js/app.c08c6dc9.js', 'http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js', '<script src="http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js" crossorigin type="module"></script>', <<<SCRIPT_TAG
+    HTML_TAG
+    ],
+    [
+        'resources/js/app.js', true, 'resources/js/app.js', 'app-js', 'js/app.c08c6dc9.js', 'http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js',
+        <<<SCRIPT_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js" crossorigin type="module"></script>
-    SCRIPT_TAG],
+    SCRIPT_TAG,
+        <<<HTML_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js" rel="modulepreload" />
+    <script src="http://example.com/app/themes/wolat/dist/js/app.c08c6dc9.js" crossorigin type="module"></script>
+    HTML_TAG
+    ],
 ]);
 
 it('asserts tags were injected', function ($entrypoints, $html) {
@@ -65,27 +82,39 @@ it('asserts tags were injected', function ($entrypoints, $html) {
 
     expect($injected)->toBe($html);
 })->with([
-    [['resources/js/common.js'], <<<SCRIPT_TAG
+    [['resources/js/common.js'], <<<HTML_TAG
 
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
     <link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
-    SCRIPT_TAG],
-    [['resources/js/common.css'], "\n<link href=\"http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css\" rel=\"stylesheet\" />"],
-    [['resources/js/common.js', 'resources/css/app.css'], <<<SCRIPT_TAG
+    HTML_TAG],
+    [['resources/js/common.css'], <<<HTML_TAG
 
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
+    <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
+    HTML_TAG],
+    [['resources/js/common.js', 'resources/css/app.css'], <<<HTML_TAG
+
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
     <link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/app.98fde70f.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/app.98fde70f.css" rel="stylesheet" />
-    SCRIPT_TAG],
-    [[['resources/js/common.js', 'resources/css/app.css']], <<<SCRIPT_TAG
+    HTML_TAG],
+    [[['resources/js/common.js', 'resources/css/app.css']], <<<HTML_TAG
 
+    <link href="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" rel="modulepreload" />
     <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
     <link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/app.98fde70f.css" />
     <link href="http://example.com/app/themes/wolat/dist/css/app.98fde70f.css" rel="stylesheet" />
-    SCRIPT_TAG],
+    HTML_TAG],
 ]);
 
 it('asserts vite may recognize if entrypoint is not exists', function () {

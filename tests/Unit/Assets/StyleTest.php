@@ -15,9 +15,15 @@ beforeEach(function () {
 });
 
 it('asserts style draws correct HTML tag', function () {
-    expect($this->style->getHtmlTag())->toBe('<link href="http://example.com/app/themes/wolat/dist/css/output.css" rel="stylesheet" />');
+    expect($this->style->getHtmlTag())->toBe(<<<OUTPUT
+    <link rel="preload" as="style" href="http://example.com/app/themes/wolat/dist/css/output.css" />
+    <link href="http://example.com/app/themes/wolat/dist/css/output.css" rel="stylesheet" />
+    OUTPUT);
 });
 
 it('asserts style draws correct HTML tag in development', function () {
-    expect($this->style->getHtmlTag(true))->toBe('<link href="http://127.0.0.1:5173/resources/css/app.css" rel="stylesheet" />');
+    expect($this->style->getHtmlTag(true))->toBe(<<<OUTPUT
+    <link rel="preload" as="style" href="http://127.0.0.1:5173/resources/css/app.css" />
+    <link href="http://127.0.0.1:5173/resources/css/app.css" rel="stylesheet" />
+    OUTPUT);
 });

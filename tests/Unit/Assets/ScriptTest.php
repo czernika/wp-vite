@@ -18,11 +18,23 @@ beforeEach(function () {
 });
 
 it('asserts script compiles correct HTML tag', function () {
-    expect($this->script->getHtmlTag())->toBe('<script src="http://example.com/app/themes/wolat/dist/js/output.js" crossorigin type="module"></script>');
-    expect($this->script->getScriptHtmlTag())->toBe('<script src="http://example.com/app/themes/wolat/dist/js/output.js" crossorigin type="module"></script>');
+    expect($this->script->getHtmlTag())->toBe(<<<SCRIPT_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/output.js" rel="modulepreload" />
+    <script src="http://example.com/app/themes/wolat/dist/js/output.js" crossorigin type="module"></script>
+    SCRIPT_TAG);
+    expect($this->script->getScriptHtmlTag())->toBe(<<<SCRIPT_TAG
+    <link href="http://example.com/app/themes/wolat/dist/js/output.js" rel="modulepreload" />
+    <script src="http://example.com/app/themes/wolat/dist/js/output.js" crossorigin type="module"></script>
+    SCRIPT_TAG);
 });
 
 it('asserts script draws correct HTML tag in development', function () {
-    expect($this->script->getHtmlTag(true))->toBe('<script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>');
-    expect($this->script->getScriptHtmlTag(true))->toBe('<script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>');
+    expect($this->script->getHtmlTag(true))->toBe(<<<SCRIPT_TAG
+    <link href="http://127.0.0.1:5173/resources/js/app.js" rel="modulepreload" />
+    <script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>
+    SCRIPT_TAG);
+    expect($this->script->getScriptHtmlTag(true))->toBe(<<<SCRIPT_TAG
+    <link href="http://127.0.0.1:5173/resources/js/app.js" rel="modulepreload" />
+    <script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>
+    SCRIPT_TAG);
 });
