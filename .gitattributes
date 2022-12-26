@@ -1,8 +1,7 @@
 # These settings are for any web project
 /.github export-ignore
 /tests export-ignore
-/docs export-ignore
-.env.ci export-ignore
+phpunit.xml export-ignore
 
 # Handle line endings automatically for files detected as text
 # and leave all files detected as binary untouched.
@@ -13,6 +12,10 @@
 
 # Windows forced line-endings
 /.idea/* text eol=crlf
+
+# Configure diff output for .php and .phar files.
+*.php diff=php
+*.phar -diff
 
 #
 ## These files are binary and should be left untouched
