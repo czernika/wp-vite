@@ -1,10 +1,8 @@
 # WordPress Wolat Assets Handler
 
-Allows to inject assets into pages
+Allows to inject assets into pages. Works in pair with npm package [wp-wolat-plugin](https://github.com/czernika/wp-vite-plugin)
 
-Works on pair with npm package [wp-wolat-plugin](https://github.com/czernika/wp-vite-plugin)
-
-[![Running Unit Tests](https://github.com/czernika/wp-vite/actions/workflows/tests.yml/badge.svg)](https://github.com/czernika/wp-vite/actions/workflows/tests.yml)
+[![Running Unit Tests](https://github.com/czernika/wp-vite/actions/workflows/tests.yml/badge.svg)](https://github.com/czernika/wp-vite/actions/workflows/tests.yml) [![Latest Tag](https://img.shields.io/github/v/tag/czernika/wp-vite)](https://github.com/czernika/wp-vite/releases)
 
 ## Installation
 
@@ -75,7 +73,7 @@ import wordPressWolat from 'wordpress-wolat'
 export default defineConfig({
 	plugins: [
 		wordPressWolat({
-            theme: 'web/app/themes/kawa',
+            theme: 'web/app/themes/my-theme',
             input: 'resources/js/app.js',
         }),
 	]
@@ -89,14 +87,7 @@ $manifest = \Wolat\Assets\Manifest::load('absolute/path/where/manifest/file/is')
 
 $vite = new \Wolat\Assets\Vite($manifest);
 
-$html = $vite->inject('resources/js/common.js');
-
-echo $html;
-
-// Output (example)
-<script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
-<link href="http://example.com/app/themes/wolat/dist/js/chunks/vendor.641c6ca9.js" rel="modulepreload" />
-<link href="http://example.com/app/themes/wolat/dist/css/common.e82aa1ab.css" rel="stylesheet" />
+echo $vite->inject('resources/js/common.js');
 
 // Or multiple entries
 // $html = $vite->inject('resources/js/app.js', 'resources/css/app.css');
@@ -109,20 +100,14 @@ You may change `dist` directory with before output. Note - manifest file depends
 
 ```js
 // vite.config.js
-import { defineConfig } from 'vite'
-import wordPressWolat from 'wordpress-wolat'
+plugins: [
+    wordPressWolat({
+        theme: 'web/app/themes/my-theme',
+        input: 'resources/js/app.js',
 
-// https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [
-		wordPressWolat({
-            theme: 'web/app/themes/kawa',
-            input: 'resources/js/app.js',
-
-            outDir: 'build', // change here
-        }),
-	]
-})
+        outDir: 'build', // change here
+    }),
+]
 ```
 
 ```php
@@ -142,20 +127,14 @@ Name of the file can be changed with
 
 ```js
 // vite.config.js
-import { defineConfig } from 'vite'
-import wordPressWolat from 'wordpress-wolat'
+plugins: [
+    wordPressWolat({
+        theme: 'web/app/themes/my-theme',
+        input: 'resources/js/app.js',
 
-// https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [
-		wordPressWolat({
-            theme: 'web/app/themes/kawa',
-            input: 'resources/js/app.js',
-
-            hot: 'newhot', // change here
-        }),
-	]
-})
+        hot: 'newhot', // change here
+    }),
+]
 ```
 
 ```php
@@ -168,20 +147,14 @@ If you need to change manifest file name you may pass second argument for `Manif
 
 ```js
 // vite.config.js
-import { defineConfig } from 'vite'
-import wordPressWolat from 'wordpress-wolat'
+plugins: [
+    wordPressWolat({
+        theme: 'web/app/themes/my-theme',
+        input: 'resources/js/app.js',
 
-// https://vitejs.dev/config/
-export default defineConfig({
-	plugins: [
-		wordPressWolat({
-            theme: 'web/app/themes/kawa',
-            input: 'resources/js/app.js',
-
-            manifest: 'assets.json', // change here
-        }),
-	]
-})
+        manifest: 'assets.json', // change here
+    }),
+]
 ```
 
 ```php
@@ -205,7 +178,7 @@ export default defineConfig({
     },
 	plugins: [
 		wordPressWolat({
-            theme: 'web/app/themes/kawa',
+            theme: 'web/app/themes/my-theme',
             input: 'resources/js/app.js',
         }),
 	]
