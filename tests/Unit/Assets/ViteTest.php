@@ -8,6 +8,8 @@ beforeEach(function () {
     $this->manifest = Manifest::load(dirname(__DIR__, 2) . '/stubs/theme/dist/');
 
     $this->loader = new Vite($this->manifest);
+
+    $this->loader->inject('resources/js/app.js');
 });
 
 it('asserts vite has initial data about development url', function () {

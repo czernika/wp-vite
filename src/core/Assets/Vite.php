@@ -25,18 +25,18 @@ class Vite
     protected string $devUrl = 'http://127.0.0.1';
 
     /**
-     * Dist directory
-     *
-     * @var string
-     */
-    protected string $distDir = '/dist/';
-
-    /**
      * Hot file name
      *
      * @var string
      */
     protected string $hotFile = 'hot';
+
+    /**
+     * Dist directory
+     *
+     * @var string
+     */
+    protected string $distDir = '/dist/';
 
     /**
      * List of assets
@@ -87,7 +87,6 @@ class Vite
 
     public function __construct(protected Manifest $manifest)
     {
-        $this->resolveAssets();
     }
 
     /**
@@ -226,6 +225,8 @@ class Vite
      */
     public function inject(...$entrypoints): string
     {
+        $this->resolveAssets();
+
         $tags = '';
         foreach ($entrypoints as $entrypoint) {
             try {

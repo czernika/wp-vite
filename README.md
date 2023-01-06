@@ -1,6 +1,10 @@
 # WordPress Wolat Assets Handler
 
-Allows to inject assets into pages - works great with Vite setup
+Allows to inject assets into pages
+
+Works on pair with npm package [wp-wolat-plugin](https://github.com/czernika/wp-vite-plugin)
+
+[![Running Unit Tests](https://github.com/czernika/wp-vite/actions/workflows/tests.yml/badge.svg)](https://github.com/czernika/wp-vite/actions/workflows/tests.yml)
 
 ## Installation
 
@@ -62,13 +66,32 @@ Typical manifest file should looks like
 2. Create new `Wolat\Assets\Vite` with `Manifest` as dependency
 3. Inject input entrypoint defined in `vite.config.js`
 
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import wordPressWolat from 'wordpress-wolat'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [
+		wordPressWolat({
+            theme: 'web/app/themes/kawa',
+            input: 'resources/js/app.js',
+        }),
+	]
+})
+```
+
 ```php
 // No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
 $manifest = \Wolat\Assets\Manifest::load('absolute/path/where/manifest/file/is');
+// $manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist');
 
 $vite = new \Wolat\Assets\Vite($manifest);
 
 $html = $vite->inject('resources/js/common.js');
+
+echo $html;
 
 // Output (example)
 <script src="http://example.com/app/themes/wolat/dist/js/common.9b86745c.js" crossorigin type="module"></script>
@@ -82,10 +105,33 @@ $html = $vite->inject('resources/js/common.js');
 
 ### Dist directory
 
-You may change `dist` directory with
+You may change `dist` directory with before output. Note - manifest file depends on dist directory, so it should be changed also
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import wordPressWolat from 'wordpress-wolat'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [
+		wordPressWolat({
+            theme: 'web/app/themes/kawa',
+            input: 'resources/js/app.js',
+
+            outDir: 'build', // change here
+        }),
+	]
+})
+```
 
 ```php
-$vite->setDistDir('/new/dist/');
+$manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'new/dist');
+
+$vite = new \Wolat\Assets\Vite($manifest);
+$vite->setDistDir('/new/dist/'); // should be wrapped within slashes
+
+$html = $vite->inject('resources/js/common.js');
 ```
 
 ### Hot file
@@ -94,59 +140,85 @@ During development it requires special `hot` file in dist directory in order to 
 
 Name of the file can be changed with
 
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import wordPressWolat from 'wordpress-wolat'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [
+		wordPressWolat({
+            theme: 'web/app/themes/kawa',
+            input: 'resources/js/app.js',
+
+            hot: 'newhot', // change here
+        }),
+	]
+})
+```
+
 ```php
 $vite->setHotFileName('newhot');
 ```
 
-## Vite config file example
+### Manifest file name
 
-> Bedrock configuration for theme named `wolat`
+If you need to change manifest file name you may pass second argument for `Manifest` object
 
 ```js
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+// vite.config.js
+import { defineConfig } from 'vite'
+import wordPressWolat from 'wordpress-wolat'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-    root: 'web/app/themes/wolat',
+	plugins: [
+		wordPressWolat({
+            theme: 'web/app/themes/kawa',
+            input: 'resources/js/app.js',
 
-    build: {
-        outDir: 'dist',
-
-        emptyOutDir: true,
-
-        manifest: true, // or `filename.json`
-
-        rollupOptions: {
-            input: [
-                'web/app/themes/wolat/resources/js/app.js',
-                'web/app/themes/wolat/resources/js/common.js',
-                'web/app/themes/wolat/resources/css/app.css',
-            ],
-            output: {
-                assetFileNames: (assetInfo) => {
-                    let extType = assetInfo.name.split('.')[0]
-                    if (/png|jpe?g|gif|tiff|bmp|ico/i.test(extType)) {
-                        extType = 'images'
-                    }
-
-                    if (/svg/i.test(extType)) {
-                        extType = 'icons'
-                    }
-
-                    return `${extType}/[name].[hash][extname]`
-                },
-                chunkFileNames: 'js/chunks/[name].[hash].js',
-                entryFileNames: 'js/[name].[hash].js'
-            }
-        }
-    },
-
-    server: {
-        strictPort: true,
-        port: 5173,
-    },
-
-    plugins: [
-        splitVendorChunkPlugin(),
-    ],
+            manifest: 'assets.json', // change here
+        }),
+	]
 })
 ```
+
+```php
+$manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist', 'assets.json');
+```
+
+### Changing dev server url and port
+
+If you need to change port and url in your `vite.config.js`
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import wordPressWolat from 'wordpress-wolat'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+    server: {
+        port: 5555,
+        host: 'some.new.host',
+    },
+	plugins: [
+		wordPressWolat({
+            theme: 'web/app/themes/kawa',
+            input: 'resources/js/app.js',
+        }),
+	]
+})
+```
+
+You should change `Vite` settings for that
+
+```php
+$vite->setViteDevPort(5555);
+$vite->setViteDevUrl('some.new.host');
+```
+
+## License
+
+Open-source under [MIT license](LICENSE.md)
