@@ -91,21 +91,43 @@ export default defineConfig({
 use Wolat\Assets\Manifest;
 use Wolat\Assets\Vite;
 
-// No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
-$manifest = Manifest::loadAsTheme('dist');
+$manifest = Manifest::load();
 
 $vite = new Vite($manifest);
 
 echo $vite->inject('resources/js/common.js');
 ```
 
-Alternative way for loading is to define custom path
+Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
+
+Manifest accepts 4 parameters
+
+| Variable | Definition |
+| --- | --- |
+| `$root` | Root directory for all files. Working directory. `get_template_directory()` for themes |
+| `$dist` | Dist directory name where manifest file is. Default: `dist` |
+| `$name` | Manifest file name. Default: `manifest.json` |
+| `$uri` | Root directory URL. Default: `get_template_directory_uri()` |
+
+### Working with plugins
+
+By default we assert you're working with WordPress themes. However you may specify custom paths for that. Within root file of plugin this should look like
 
 ```php
-$manifest = Manifest::load(get_template_directory(), 'dist');
+Manifest::load(
+    root: plugin_dir_path(__FILE__),
+    uri: plugin_dir_url(__FILE__),
+);
 ```
 
-Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
+```js
+plugins: [
+    wordPressWolat({
+        theme: 'web/app/plugins/my-plugin',
+        input: 'resources/js/app.js',
+    }),
+]
+```
 
 ### Dist directory
 
@@ -124,7 +146,6 @@ plugins: [
 ```
 
 ```php
-// Manifest dir should be changed also
 $manifest = Manifest::loadAsTheme('new/dist');
 
 $vite = new Vite($manifest);

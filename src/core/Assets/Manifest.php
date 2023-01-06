@@ -33,7 +33,7 @@ class Manifest
 
     protected function __construct(
         protected string $root,
-        protected string $dist,
+        protected string $dist = 'dist',
         protected string $name = 'manifest.json',
         protected ?string $uri = null,
     ) {
@@ -124,9 +124,9 @@ class Manifest
      * @param string $name
      * @return static
      */
-    public static function load(string $root, string $path, string $name = 'manifest.json', ?string $uri = null): static
+    public static function load(string $root, string $dist = 'dist', string $name = 'manifest.json', ?string $uri = null): static
     {
-        return new static($root, $path, $name, $uri);
+        return new static($root, $dist, $name, $uri);
     }
 
     /**
@@ -136,9 +136,9 @@ class Manifest
      * @param string $name
      * @return static
      */
-    public static function loadAsTheme(string $path, string $name = 'manifest.json'): static
+    public static function loadAsTheme(string $dist = 'dist', string $name = 'manifest.json'): static
     {
-        return (static::load(get_template_directory(), $path, $name, get_template_directory_uri()));
+        return (static::load(get_template_directory(), $dist, $name, get_template_directory_uri()));
     }
 
     /**
