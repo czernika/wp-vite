@@ -1,6 +1,8 @@
-# WordPress Wolat Assets Handler
+# WordPress Vite Assets Loader
 
-Allows to inject assets into pages. Works in pair with npm package [wp-wolat-plugin](https://github.com/czernika/wp-vite-plugin)
+Allows to inject assets tags into pages using [Vite](https://vitejs.dev/) tool.
+
+Works in pair with [Vite plugin](https://github.com/czernika/wp-vite-plugin)
 
 [![Running Unit Tests](https://github.com/czernika/wp-vite/actions/workflows/tests.yml/badge.svg)](https://github.com/czernika/wp-vite/actions/workflows/tests.yml) [![Latest Tag](https://img.shields.io/github/v/tag/czernika/wp-vite)](https://github.com/czernika/wp-vite/releases)
 
@@ -8,7 +10,7 @@ Allows to inject assets into pages. Works in pair with npm package [wp-wolat-plu
 
 > In progress
 
-For now may be resolved as Composer dependency
+For now may be resolved as [Composer](https://getcomposer.org/) dependency within `composer.json`
 
 ```json
 "repositories": [
@@ -24,9 +26,13 @@ For now may be resolved as Composer dependency
 
 ## Usage
 
+You should pre-install [WordPress Vite plugin](https://github.com/czernika/wp-vite-plugin) and configure `vite.config.js`
+
 1. Create new `Wolat\Assets\Manifest` instance with path to compiled `manifest.json` file
 
-Typical manifest file should looks like
+> NOTE: manifest file SHOULD exists. Run `npm run build` in order to generate it
+
+Typical generated manifest file with all dependencies should look like
 
 ```json
 {
@@ -61,15 +67,16 @@ Typical manifest file should looks like
 }
 ```
 
-2. Create new `Wolat\Assets\Vite` with `Manifest` as dependency
-3. Inject input entrypoint defined in `vite.config.js`
+1. Create new `Wolat\Assets\Vite` with `Manifest` dependency
+2. Inject input entrypoints defined in `vite.config.js`
+
+### Example
 
 ```js
 // vite.config.js
 import { defineConfig } from 'vite'
 import wordPressWolat from 'wordpress-wolat'
 
-// https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		wordPressWolat({
@@ -81,18 +88,18 @@ export default defineConfig({
 ```
 
 ```php
-// No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
-$manifest = \Wolat\Assets\Manifest::load('absolute/path/where/manifest/file/is');
-// $manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist');
+use Wolat\Assets\Manifest;
+use Wolat\Assets\Vite;
 
-$vite = new \Wolat\Assets\Vite($manifest);
+// No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
+$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist');
+
+$vite = new Vite($manifest);
 
 echo $vite->inject('resources/js/common.js');
-
-// Or multiple entries
-// $html = $vite->inject('resources/js/app.js', 'resources/css/app.css');
-// $html = $vite->inject(['resources/js/app.js', 'resources/css/app.css']);
 ```
+
+Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
 
 ### Dist directory
 
@@ -105,25 +112,24 @@ plugins: [
         theme: 'web/app/themes/my-theme',
         input: 'resources/js/app.js',
 
-        outDir: 'build', // change here
+        outDir: 'build', // here
     }),
 ]
 ```
 
 ```php
-$manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'new/dist');
+// Manifest dir should be changed also
+$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'new/dist');
 
-$vite = new \Wolat\Assets\Vite($manifest);
-$vite->setDistDir('/new/dist/'); // should be wrapped within slashes
+$vite = new Vite($manifest);
+$vite->setDistDir('/new/dist/'); // new placement should be wrapped within slashes
 
 $html = $vite->inject('resources/js/common.js');
 ```
 
 ### Hot file
 
-During development it requires special `hot` file in dist directory in order to resolve development and non-development environment
-
-Name of the file can be changed with
+During development it requires special `hot` file in dist directory in order to resolve development and non-development environment. Name of this file can be changed with
 
 ```js
 // vite.config.js
@@ -132,7 +138,7 @@ plugins: [
         theme: 'web/app/themes/my-theme',
         input: 'resources/js/app.js',
 
-        hot: 'newhot', // change here
+        hot: 'newhot', // here
     }),
 ]
 ```
@@ -141,7 +147,7 @@ plugins: [
 $vite->setHotFileName('newhot');
 ```
 
-### Manifest file name
+### Manifest file
 
 If you need to change manifest file name you may pass second argument for `Manifest` object
 
@@ -152,13 +158,13 @@ plugins: [
         theme: 'web/app/themes/my-theme',
         input: 'resources/js/app.js',
 
-        manifest: 'assets.json', // change here
+        manifest: 'assets.json', // here
     }),
 ]
 ```
 
 ```php
-$manifest = \Wolat\Assets\Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist', 'assets.json');
+$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist', 'assets.json');
 ```
 
 ### Changing dev server url and port
@@ -172,10 +178,12 @@ import wordPressWolat from 'wordpress-wolat'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+
     server: {
         port: 5555,
         host: 'some.new.host',
     },
+
 	plugins: [
 		wordPressWolat({
             theme: 'web/app/themes/my-theme',
@@ -191,6 +199,11 @@ You should change `Vite` settings for that
 $vite->setViteDevPort(5555);
 $vite->setViteDevUrl('some.new.host');
 ```
+
+## TODO
+
+- [ ] - Remove slashes wrapper fro new dist
+- [ ] - Do NOT include dist directory in the manifest loader (setting being duplicated)
 
 ## License
 
