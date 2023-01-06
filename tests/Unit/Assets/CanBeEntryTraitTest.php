@@ -6,6 +6,7 @@ use Wolat\Assets\Style;
 beforeEach(function () {
     $asset = new RawAsset();
 
+    $asset->setViteData('http://127.0.0.1:5173', '/dist/', get_template_directory(), get_template_directory_uri());
     $asset->setSrc('resources/css/common.css');
     $asset->setAsEntry(true);
 

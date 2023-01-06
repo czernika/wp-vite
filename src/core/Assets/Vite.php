@@ -32,13 +32,6 @@ class Vite
     protected string $hotFile = 'hot';
 
     /**
-     * Dist directory
-     *
-     * @var string
-     */
-    protected string $distDir = '/dist/';
-
-    /**
      * List of assets
      * All available assets from manifest
      *
@@ -102,18 +95,6 @@ class Vite
     }
 
     /**
-     * Draw HTML tags from path to manifest file
-     *
-     * @param string $manifest
-     * @param string|string[] ...$entrypoints
-     * @return string
-     */
-    public static function drawTagsFromPath(string $manifest, ...$entrypoints): string
-    {
-        return static::drawTags(Manifest::load($manifest), ...$entrypoints);
-    }
-
-    /**
      * Get Vite development port
      *
      * @return integer
@@ -172,26 +153,7 @@ class Vite
      */
     public function getDistDir(): string
     {
-        return $this->distDir;
-    }
-
-    /**
-     * Set dist directory
-     *
-     * @param string $dir
-     * @return void
-     */
-    public function setDistDir(string $dir): void
-    {
-        if (!str_starts_with($dir, DIRECTORY_SEPARATOR)) {
-            $dir = DIRECTORY_SEPARATOR . $dir;
-        }
-
-        if (!str_ends_with($dir, DIRECTORY_SEPARATOR)) {
-            $dir .= DIRECTORY_SEPARATOR;
-        }
-
-        $this->distDir = $dir;
+        return $this->manifest->getDist();
     }
 
     /**
@@ -268,7 +230,7 @@ class Vite
     public function isDevServerRunning(): bool
     {
         // TODO check test environment
-        return file_exists(get_template_directory() . $this->getDistDir() . $this->getHotFileName());
+        return file_exists($this->manifest->getRootPath() . $this->getDistDir() . $this->getHotFileName());
     }
 
     /**
@@ -363,7 +325,12 @@ class Vite
      */
     protected function addDevServerDataToAsset(RawAsset $data): RawAsset
     {
-        $data->setViteData($this->getViteFullDevUrl(), $this->getDistDir());
+        $data->setViteData(
+            $this->getViteFullDevUrl(),
+            $this->getDistDir(),
+            $this->manifest->getRootPath(),
+            $this->manifest->getRootUri(),
+        );
 
         return $data;
     }

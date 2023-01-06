@@ -53,7 +53,7 @@ trait Compilable
      */
     public function getAbsoluteDistFilePath(): string
     {
-        return wp_normalize_path(get_template_directory() . $this->getDistFilePath());
+        return wp_normalize_path($this->asset->getRootPath() . $this->getDistFilePath());
     }
 
     /**
@@ -63,7 +63,7 @@ trait Compilable
      */
     protected function getNonDevUrl(): string
     {
-        return get_template_directory_uri();
+        return $this->asset->getRootUrl();
     }
 
     /**

@@ -56,16 +56,54 @@ class RawAsset
     protected string $dist;
 
     /**
+     * Asset root path
+     *
+     * @var string
+     */
+    protected string $rootPath;
+
+    /**
+     * Asset root URL
+     *
+     * @var string
+     */
+    protected string $rootUrl;
+
+    /**
      * Set extra data about environment
      *
      * @param string $url
      * @param string $dist
+     * @param string $rootPath
+     * @param string $rootUrl
      * @return void
      */
-    public function setViteData(string $url, string $dist): void
+    public function setViteData(string $url, string $dist, string $rootPath, string $rootUrl): void
     {
         $this->url = $url;
         $this->dist = $dist;
+        $this->rootPath = $rootPath;
+        $this->rootUrl = $rootUrl;
+    }
+
+    /**
+     * Get asset root path
+     *
+     * @return string
+     */
+    public function getRootPath(): string
+    {
+        return $this->rootPath;
+    }
+
+    /**
+     * Get asset root URL
+     *
+     * @return string
+     */
+    public function getRootUrl(): string
+    {
+        return $this->rootUrl;
     }
 
     /**

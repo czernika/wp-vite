@@ -6,7 +6,7 @@ use Wolat\Assets\Vendor;
 use Wolat\Assets\Vite;
 
 beforeEach(function () {
-    $this->vite = new Vite(Manifest::load(dirname(__DIR__, 2) . '/stubs/theme/dist/'));
+    $this->vite = new Vite(Manifest::load(dirname(__DIR__, 2) . '/stubs/theme', 'dist'));
 
     $this->vite->inject('resources/js/common.js');
 

@@ -5,7 +5,7 @@ use Wolat\Assets\RawAsset;
 beforeEach(function () {
     $this->asset = new RawAsset();
 
-    $this->asset->setViteData('http://127.0.0.1:5173', '/dist/');
+    $this->asset->setViteData('http://127.0.0.1:5173', '/dist/', get_template_directory(), get_template_directory_uri());
     $this->asset->setSrc('src/file.css');
     $this->asset->setAsEntry(true);
     $this->asset->setFilePath('output/file.css');

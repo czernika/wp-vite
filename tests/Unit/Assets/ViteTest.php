@@ -5,7 +5,7 @@ use Wolat\Assets\Vite;
 use Wolat\Assets\Manifest;
 
 beforeEach(function () {
-    $this->manifest = Manifest::load(dirname(__DIR__, 2) . '/stubs/theme/dist/');
+    $this->manifest = Manifest::load(dirname(__DIR__, 2) . '/stubs/theme', 'dist');
 
     $this->loader = new Vite($this->manifest);
 

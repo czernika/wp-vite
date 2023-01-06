@@ -21,7 +21,7 @@ trait CanBeEntry
      */
     public function getAbsoluteSrcPath(): string
     {
-        return wp_normalize_path(get_template_directory() . DIRECTORY_SEPARATOR . $this->getSrc());
+        return wp_normalize_path($this->asset->getRootPath() . DIRECTORY_SEPARATOR . $this->getSrc());
     }
 
     /**

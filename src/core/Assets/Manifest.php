@@ -11,13 +11,6 @@ use Wolat\Assets\Exceptions\ManifestFileNotFoundException;
 class Manifest
 {
     /**
-     * Manifest instance
-     *
-     * @var null|static
-     */
-    protected static ?Manifest $instance = null;
-
-    /**
      * List of manifest raw assets
      *
      * @var Array<string, RawAsset>
@@ -31,10 +24,86 @@ class Manifest
      */
     protected JsonMapper $mapper;
 
-    protected function __construct(protected string $path, protected string $name = 'manifest.json')
-    {
+    /**
+     * Root path
+     *
+     * @var string
+     */
+    protected string $path;
+
+    protected function __construct(
+        protected string $root,
+        protected string $dist,
+        protected string $name = 'manifest.json',
+        protected ?string $uri = null,
+    ) {
+        $this->setPath($this->root . DIRECTORY_SEPARATOR . $this->dist);
+        $this->setDist($this->dist);
+
         $this->initMapper();
         $this->resolveAssets();
+    }
+
+    /**
+     * Get theme path
+     *
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set theme path
+     *
+     * @param string $path
+     * @return void
+     */
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * Get dist directory
+     *
+     * @return string
+     */
+    public function getDist(): string
+    {
+        return $this->dist;
+    }
+
+    /**
+     * Set dist directory wrapped in slashes
+     *
+     * @param string $dist
+     * @return void
+     */
+    public function setDist(string $dist): void
+    {
+        $this->dist = DIRECTORY_SEPARATOR . $dist . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Get root path
+     *
+     * @return string
+     */
+    public function getRootPath(): string
+    {
+        return $this->root ??= get_template_directory();
+    }
+
+    /**
+     * Get root uri
+     *
+     * @return string
+     */
+    public function getRootUri(): string
+    {
+        return $this->uri ??= get_template_directory_uri();
     }
 
     /**
@@ -55,25 +124,21 @@ class Manifest
      * @param string $name
      * @return static
      */
-    public static function load(string $path, string $name = 'manifest.json'): static
+    public static function load(string $root, string $path, string $name = 'manifest.json', ?string $uri = null): static
     {
-        return new static($path, $name);
+        return new static($root, $path, $name, $uri);
     }
 
     /**
-     * Load previously created manifest object or new one
+     * Instantiate new manifest object for theme
      *
      * @param string $path
      * @param string $name
      * @return static
      */
-    public static function loadSingleton(string $path, string $name = 'manifest.json'): static
+    public static function loadAsTheme(string $path, string $name = 'manifest.json'): static
     {
-        if (is_null(static::$instance)) {
-            static::$instance = static::load($path, $name);
-        }
-
-        return static::$instance;
+        return (static::load(get_template_directory(), $path, $name, get_template_directory_uri()));
     }
 
     /**
@@ -120,7 +185,7 @@ class Manifest
      */
     protected function getNormalizedPath(): string
     {
-        $path = wp_normalize_path($this->path);
+        $path = wp_normalize_path($this->getPath());
         return str_ends_with($path, DIRECTORY_SEPARATOR) ? $path : $path . DIRECTORY_SEPARATOR;
     }
 

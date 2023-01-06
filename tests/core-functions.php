@@ -26,3 +26,10 @@ if (!function_exists('get_template_directory_uri')) {
         return 'http://example.com/app/themes/wolat';
     }
 }
+
+if (!function_exists('trailingslashit')) {
+    function trailingslashit(string $path): string
+    {
+        return $path . DIRECTORY_SEPARATOR;
+    }
+}

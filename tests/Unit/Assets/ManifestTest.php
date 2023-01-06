@@ -6,10 +6,10 @@ use Wolat\Assets\RawAsset;
 beforeEach(function () {
     $this->path = dirname(__DIR__, 2) . '/stubs/theme/dist/';
 
-    $this->manifest = Manifest::load($this->path, 'assets.json');
+    $this->manifest = Manifest::load(dirname(__DIR__, 2) . '/stubs/theme', 'dist', 'assets.json');
 });
 
-it('asserts manifest can get its filename if was passed', function () {
+it('asserts manifest can get its filename if it was passed', function () {
     expect($this->manifest->getName())->toBe('assets.json');
 });
 

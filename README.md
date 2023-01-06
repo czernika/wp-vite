@@ -92,11 +92,17 @@ use Wolat\Assets\Manifest;
 use Wolat\Assets\Vite;
 
 // No need to add manifest name at the end like `path/to/manifest.json` - only `path/to`
-$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist');
+$manifest = Manifest::loadAsTheme('dist');
 
 $vite = new Vite($manifest);
 
 echo $vite->inject('resources/js/common.js');
+```
+
+Alternative way for loading is to define custom path
+
+```php
+$manifest = Manifest::load(get_template_directory(), 'dist');
 ```
 
 Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
@@ -119,10 +125,9 @@ plugins: [
 
 ```php
 // Manifest dir should be changed also
-$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'new/dist');
+$manifest = Manifest::loadAsTheme('new/dist');
 
 $vite = new Vite($manifest);
-$vite->setDistDir('/new/dist/'); // new placement should be wrapped within slashes
 
 $html = $vite->inject('resources/js/common.js');
 ```
@@ -164,7 +169,7 @@ plugins: [
 ```
 
 ```php
-$manifest = Manifest::load(get_template_directory() . DIRECTORY_SEPARATOR . 'dist', 'assets.json');
+$manifest = Manifest::loadAsTheme('dist', 'assets.json');
 ```
 
 ### Changing dev server url and port
@@ -199,11 +204,6 @@ You should change `Vite` settings for that
 $vite->setViteDevPort(5555);
 $vite->setViteDevUrl('some.new.host');
 ```
-
-## TODO
-
-- [ ] - Remove slashes wrapper fro new dist
-- [ ] - Do NOT include dist directory in the manifest loader (setting being duplicated)
 
 ## License
 

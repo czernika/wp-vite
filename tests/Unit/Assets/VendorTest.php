@@ -6,7 +6,7 @@ use Wolat\Assets\Vendor;
 beforeEach(function () {
     $asset = new RawAsset();
 
-    $asset->setViteData('http://127.0.0.1:5173', '/dist/');
+    $asset->setViteData('http://127.0.0.1:5173', '/dist/', get_template_directory(), get_template_directory_uri());
     $asset->setSrc('resources/js/part.js');
     $asset->setFilePath('js/chunks/vendor.js');
 
