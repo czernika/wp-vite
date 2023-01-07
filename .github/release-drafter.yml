@@ -2,8 +2,11 @@ name-template: "v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
 category-template: '### $TITLE'
 template: |
+
   ## :eyes: What's new
+
   $CHANGES
+  
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 change-template: "- $TITLE ([#$NUMBER]($URL)) by @$AUTHOR"
 no-changes-template: "* Minor changes"
