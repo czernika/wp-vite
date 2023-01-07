@@ -394,7 +394,7 @@ class Vite
      */
     public function isVendor(string $asset): bool
     {
-        return str_starts_with($asset, '_vendor');
+        return $this->isScript($asset) && str_starts_with($asset, '_');
     }
 
     /**
