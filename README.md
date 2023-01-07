@@ -91,11 +91,18 @@ export default defineConfig({
 use Wolat\Assets\Manifest;
 use Wolat\Assets\Vite;
 
-$manifest = Manifest::load();
+$manifest = Manifest::loadAsTheme();
 
 $vite = new Vite($manifest);
 
 echo $vite->inject('resources/js/common.js');
+
+// or in functions.php
+add_action('wp_head', function () {
+    echo (new Vite(
+        Manifest::loadAsTheme()
+    ))->inject('resources/js/app.js');
+});
 ```
 
 Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
@@ -146,7 +153,7 @@ plugins: [
 ```
 
 ```php
-$manifest = Manifest::loadAsTheme('new/dist');
+$manifest = Manifest::loadAsTheme('build');
 
 $vite = new Vite($manifest);
 
@@ -191,6 +198,13 @@ plugins: [
 
 ```php
 $manifest = Manifest::loadAsTheme('dist', 'assets.json');
+
+// or
+$manifest = Manifest::load(
+    get_template_directory(),
+    'dist',
+    'assets.json',
+);
 ```
 
 ### Changing dev server url and port
@@ -224,6 +238,19 @@ You should change `Vite` settings for that
 ```php
 $vite->setViteDevPort(5555);
 $vite->setViteDevUrl('some.new.host');
+```
+
+### Changing assets URL on production
+
+On a production server path to your assets defined as URL to directory where they've been stored. You may pass fourth parameter for that into your `Manifest` instance
+
+```php
+$manifest = Manifest::load(
+    get_template_directory(),
+    'dist',
+    'assets.json',
+    get_template_directory_uri(),
+);
 ```
 
 ## License

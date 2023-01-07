@@ -1,9 +1,11 @@
-name: Running Unit Tests
+name: Running Tests
 
 on:
   push:
     branches:
       - master
+    paths:
+      - '**.php'
   pull_request:
 
 jobs:
