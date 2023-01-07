@@ -23,7 +23,6 @@ it('asserts style draws correct HTML tag', function () {
 
 it('asserts style draws correct HTML tag in development', function () {
     expect($this->style->getHtmlTag(true))->toBe(<<<OUTPUT
-    <link rel="preload" as="style" href="http://127.0.0.1:5173/resources/css/app.css" />
     <link href="http://127.0.0.1:5173/resources/css/app.css" rel="stylesheet" />
     OUTPUT);
 });

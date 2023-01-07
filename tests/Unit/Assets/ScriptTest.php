@@ -30,11 +30,9 @@ it('asserts script compiles correct HTML tag', function () {
 
 it('asserts script draws correct HTML tag in development', function () {
     expect($this->script->getHtmlTag(true))->toBe(<<<SCRIPT_TAG
-    <link href="http://127.0.0.1:5173/resources/js/app.js" rel="modulepreload" />
     <script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>
     SCRIPT_TAG);
     expect($this->script->getScriptHtmlTag(true))->toBe(<<<SCRIPT_TAG
-    <link href="http://127.0.0.1:5173/resources/js/app.js" rel="modulepreload" />
     <script src="http://127.0.0.1:5173/resources/js/app.js" crossorigin type="module"></script>
     SCRIPT_TAG);
 });

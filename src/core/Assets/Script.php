@@ -42,6 +42,10 @@ class Script implements AssetInterface, CanBeEntryInterface
      */
     public function getScriptHtmlTag(bool $isDev = false): string
     {
+        if ($isDev) {
+            return "<script src=\"{$this->getDistUrl($isDev)}\" crossorigin type=\"module\"></script>";
+        }
+
         return "<link href=\"{$this->getDistUrl($isDev)}\" rel=\"modulepreload\" />\n<script src=\"{$this->getDistUrl($isDev)}\" crossorigin type=\"module\"></script>";
     }
 
