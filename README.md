@@ -103,6 +103,9 @@ add_action('wp_head', function () {
         Manifest::loadAsTheme()
     ))->inject('resources/js/app.js');
 });
+
+// or just using helper function
+wl_wite('resources/js/app.js');
 ```
 
 Inject method will resolve required assets and all its dependencies depends on environment type and inject appropriate tags into HTML (where inject method being called)
@@ -115,6 +118,17 @@ Manifest accepts 4 parameters
 | `$dist` | Dist directory name where manifest file is. Default: `dist` |
 | `$name` | Manifest file name. Default: `manifest.json` |
 | `$uri` | Root directory URL. Default: `get_template_directory_uri()` |
+
+
+### Helper function `wl_wite`
+
+**Works only with themes**
+
+Will output entrypoint and its dependencies
+
+```php
+wl_wite('resources/js/app.js');
+```
 
 ### Working with plugins
 

@@ -33,6 +33,9 @@
   "autoload": {
     "psr-4": {
       "Wolat\\": "src/core"
-    }
+    },
+    "files": [
+      "./src/core/helpers.php"
+    ]
   }
 }
